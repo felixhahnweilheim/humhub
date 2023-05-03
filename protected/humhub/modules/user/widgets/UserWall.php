@@ -4,7 +4,7 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\user\models\User;
 
-class UserWall extends \yii\base\Widget
+class UserWall extends \humhub\components\Widget
 {
 
     /**
