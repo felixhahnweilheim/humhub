@@ -47,5 +47,8 @@ HumHub Changelog
 - Enh #6361: Use `LongRunningActiveJob` on more active jobs
 - Enh #6363: Add an event in the NotificationManager to allow removing some notifications categories in the settings
 - Enh #6371: Space Hide Member Option disables Member Joined/Left Activities
+- Enh #6375: Performance Improvements
 - Enh #6369: Don't pin draft and scheduled contents on dashboard
 - Enh #6370: Remove FlatElements CSS
+- Enh #6384: Added Serbian(sr) language
+- Enh #6389: Remove deprecated JS function `setModalLoader()`
