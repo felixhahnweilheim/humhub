@@ -16,5 +16,30 @@ Version 1.15 (Unreleased)
 - Removed deprecated javascript method `setModalLoader()`
 - Javascript CSP Nonces are now required and enabled by default! See: https://docs.humhub.org/docs/develop/javascript/
 
+### Deprecations
+
+- `Content::addTags()` and `Content::addTag()` are now deprecated. Use `ContentTagService` instead.
+- Removed deprecated classes `humhub\widgets\AjaxButton` and `humhub\widgets\ModalConfirm`
+
+
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
+
+### Removed Deprecations
+
+- `humhub\modules\content\widgets\richtext\PreviewMarkdown`
+- `humhub\modules\content\widgets\richtext\ProsemirrorRichText::replaceLinkExtension`
+- `humhub\modules\content\widgets\richtext\ProsemirrorRichText::scanLinkExtension`
+- `humhub\modules\content\widgets\richtext\ProsemirrorRichText::parseOutput`
+- `humhub\modules\content\widgets\richtext\AbstractRichText::$minimal`
+- `humhub\modules\content\widgets\richtext\AbstractRichText::$maxLength`
+- `humhub\modules\content\widgets\richtext\AbstractRichText::$markdown`
+- `humhub\libs\Markdown`
+- `humhub\libs\MarkdownPreview`
+- `humhub\widgets\MarkdownEditor`
+- `humhub\widgets\MarkdownField`
+- `humhub\widgets\MarkdownFieldModals`
+- `humhub\modules\ui\form\widgets\Markdown`
+- 
+
+

@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -25,7 +26,9 @@ use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -809,37 +812,22 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      *
      * @param ContentTag $tag
      * @return bool if the provided tag is part of another ContentContainer
-     * @since 1.2.2
+     * @deprecated since 1.15
      */
     public function addTag(ContentTag $tag)
     {
-        if (!empty($tag->contentcontainer_id) && $tag->contentcontainer_id != $this->contentcontainer_id) {
-            throw new InvalidArgumentException(Yii::t('ContentModule.base', 'Content Tag with invalid contentcontainer_id assigned.'));
-        }
-
-        if (ContentTagRelation::findBy($this, $tag)->count()) {
-            return true;
-        }
-
-        $this->refresh();
-
-        SearchHelper::queueUpdate($this->getPolymorphicRelation());
-
-        $contentRelation = new ContentTagRelation($this, $tag);
-        return $contentRelation->save();
+        return (new ContentTagService($this))->addTag($tag);
     }
 
     /**
      * Adds the given ContentTag array to this content.
      *
      * @param $tags ContentTag[]
-     * @since 1.3
+     * @deprecated since 1.15
      */
     public function addTags($tags)
     {
-        foreach ($tags as $tag) {
-            $this->addTag($tag);
-        }
+        (new ContentTagService($this))->addTags($tags);
     }
 
     /**
