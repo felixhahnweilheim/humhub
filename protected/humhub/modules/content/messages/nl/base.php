@@ -1,7 +1,6 @@
 <?php
 return array (
   '(Also visible to non-members of this space)' => '(Ook zichtbaar voor niet-leden van deze ruimte)',
-  '<strong>Confirm</strong> post deletion' => '<strong>Bevestig</strong> bericht verwijderen',
   '<strong>Delete</strong> content?' => 'Inhoud <strong>verwijderen</strong>?',
   '<strong>Move</strong> content' => 'Inhoud <strong>verplaatsen</strong>',
   '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> naar dit bericht',
@@ -32,7 +31,7 @@ return array (
   'Creation time' => 'Aanmaak datum',
   'Delete' => 'Verwijder',
   'Deleted' => 'Verwijderd',
-  'Do you really want to delete this post? All likes and comments will be lost!' => 'Weet u zeker dat u dit bericht wilt verwijderen? Alle vind-ik-leuks en reacties zullen verloren gaan!',
+  'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => 'Wilt u deze inhoud verwijderen, inclusief alle opmerkingen en bijlagen?<br><br>Let op: als een stream-item is gemaakt met behulp van een module, wordt de originele inhoud waaraan dit item is gekoppeld, ook verwijderd.',
   'Draft' => 'Concept',
   'Edit' => 'Bewerk',
   'Enable' => 'Inschakelen',

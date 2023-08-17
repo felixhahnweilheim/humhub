@@ -239,16 +239,14 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     public function afterSave($insert, $changedAttributes)
     {
         if (array_key_exists('state', $changedAttributes)) {
-            $model = $this->getPolymorphicRelation();
+            // Run process for new content(Send notifications) only after changing state
+            $this->processNewContent();
 
-            if ($this->getStateService()->isPublished()) {
-                // Run process for new content(Send notifications) only after publishing the Content
-                $this->processNewContent();
-                // Also run process for parent object in order to send notifications like mentioning users,
-                // for case when it was not published on creating
-                if (!$insert && $model instanceof ActiveRecord) {
-                    $model->afterSave(false, []);
-                }
+            $model = $this->getModel();
+            if (!$insert && $model instanceof ContentActiveRecord && $this->getStateService()->isPublished()) {
+                // Run process to send notifications like mentioning users, for cases when
+                // it was not published on creating or on updating published Content
+                $model->afterSave(false, []);
             }
 
             $previousState = $changedAttributes['state'] ?? null;
@@ -274,6 +272,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     private function processNewContent()
     {
+        if (!$this->getStateService()->isPublished()) {
+            // Don't notify about not published Content
+            return;
+        }
+
+        if ($this->getStateService()->wasPublished()) {
+            // No need to notify twice for already published Content before
+            return;
+        }
+
         $record = $this->getModel();
 
         Yii::debug('Process new content: ' . get_class($record) . ' ID: ' . $record->getPrimaryKey(), 'content');
@@ -467,11 +475,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     /**
      * Checks if the content object is pinned
      *
-     * @return Boolean
+     * @return bool
      */
-    public function isPinned()
+    public function isPinned(): bool
     {
-        return ($this->pinned);
+        return (bool)$this->pinned;
     }
 
     /**
@@ -489,7 +497,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function unpin()
     {
-
         $this->pinned = 0;
         $this->updateAttributes(['pinned']);
     }
@@ -502,7 +509,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function canPin()
+    public function canPin(): bool
     {
         // Currently global content can not be pinned
         if (!$this->getContainer()) {
@@ -532,7 +539,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @return boolean
      * @throws Exception
      */
-    public function isArchived()
+    public function isArchived(): bool
     {
         return $this->archived || ($this->getContainer() !== null && $this->getContainer()->isArchived());
     }
@@ -545,7 +552,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * @throws Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function canArchive()
+    public function canArchive(): bool
     {
         // Currently global content can not be archived
         if (!$this->getContainer()) {
@@ -562,20 +569,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     /**
      * Archives the content object
+     *
+     * @return bool
      */
-    public function archive()
+    public function archive(): bool
     {
-        if ($this->canArchive()) {
-
-            if ($this->isPinned()) {
-                $this->unpin();
-            }
-
-            $this->archived = 1;
-            if (!$this->save()) {
-                throw new Exception("Could not archive content!" . print_r($this->getErrors(), 1));
-            }
+        if ($this->isPinned()) {
+            $this->unpin();
         }
+
+        $this->archived = 1;
+        return $this->save();
     }
 
     /**
@@ -701,14 +705,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
     /**
      * Unarchives the content object
+     *
+     * @return bool
      */
-    public function unarchive()
+    public function unarchive(): bool
     {
-        if ($this->canArchive()) {
-
-            $this->archived = 0;
-            $this->save();
-        }
+        $this->archived = 0;
+        return $this->save();
     }
 
     /**

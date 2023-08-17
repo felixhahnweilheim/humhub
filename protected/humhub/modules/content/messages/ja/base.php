@@ -1,7 +1,6 @@
 <?php
 return array (
   '(Also visible to non-members of this space)' => '（このスペースはメンバー以外にも表示されます）',
-  '<strong>Confirm</strong> post deletion' => '<strong>確認</strong> 投稿の削除',
   '<strong>Delete</strong> content?' => 'コンテンツを<strong>削除</strong>しますか？',
   '<strong>Move</strong> content' => 'コンテンツの<strong>移動</strong>',
   '<strong>Permalink</strong> to this post' => 'この投稿への<strong>パーマリンク</strong>',
@@ -32,7 +31,7 @@ return array (
   'Creation time' => '作成時間',
   'Delete' => '削除',
   'Deleted' => '削除しました',
-  'Do you really want to delete this post? All likes and comments will be lost!' => '本当に削除してもよろしいですか？いいね！やコメントも削除されます',
+  'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => 'すべてのコメントと添付ファイルを含むこのコンテンツを削除しますか？<br><br>注意:ストリーム エントリがモジュールを使用して作成された場合、このエントリがリンクされている元のコンテンツも削除されます。',
   'Draft' => '下書き',
   'Edit' => '編集',
   'Enable' => '有効化',

@@ -241,8 +241,15 @@ class Html extends \yii\bootstrap\Html
             $minimumResultsForSearch++;
         }
 
+        if ($minimumResultsForSearch > 0 && isset($options['data-ui-select2-allow-new'])) {
+            // Don't use this limit when new item is allowed for adding,
+            // otherwise a new item input is hidden by Select2 JS code
+            $minimumResultsForSearch = 0;
+        }
+
         return ArrayHelper::merge([
             'data-ui-select2' => true,
+            'style' => 'width:100%',
             'data-search-input-placeholder' => Yii::t('base', 'Search...'),
             'data-minimum-results-for-search' => $minimumResultsForSearch,
         ], $options);
