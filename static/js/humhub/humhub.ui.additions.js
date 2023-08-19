@@ -210,14 +210,9 @@ humhub.module('ui.additions', function (module, require, $) {
             $match.tooltip({
                 container: 'body'
             });
-
-            $match.on('click.tooltip', function () {
-                $('.tooltip').remove();
-            });
         });
 
         $(document).on('click.humhub-ui-additions', function () {
-            $('.tooltip').remove();
             $('.popover:not(.tour,.prevClose)').remove();
         });
 
